@@ -71,7 +71,7 @@ namespace CityLibrarySystem.Models
 
         public void ShowAvailableCopies()
         {
-            ThemeHelper.PrintHeader(" Available Book Copies:");
+            ThemeHelper.PrintHeader("Available Book Copies");
             bool any = false;
             foreach (BookCopy c in Copies)
             {
@@ -81,20 +81,24 @@ namespace CityLibrarySystem.Models
                     any = true;
                 }
             }
-            if (!any) ThemeHelper.PrintWarning("  No copies currently available.");
+            if (!any) ThemeHelper.PrintWarning("No available book copies found");
         }
 
         public void ShowAllCopies()
         {
-            ThemeHelper.PrintHeader(" All Book Copies:");
-            if (Copies.Count == 0) { ThemeHelper.PrintWarning("  No copies in branch."); return; }
+            ThemeHelper.PrintHeader("All Book Copies");
+            if (Copies.Count == 0)
+            {
+                ThemeHelper.PrintWarning("No book copies found");
+                return;
+            }
             foreach (BookCopy c in Copies)
                 c.DisplayInfo();
         }
 
         public void ShowAllUsers()
         {
-            ThemeHelper.PrintHeader(" All Registered Users:");
+            ThemeHelper.PrintHeader("All Registered Users");
             foreach (LibraryUser user in Users)
                 user.DisplayInfo();
         }
@@ -102,15 +106,15 @@ namespace CityLibrarySystem.Models
 
         public void DisplayInfo()
         {
-            ThemeHelper.PrintHeader("LIBRARY BRANCH INFO ");
-            Console.WriteLine($"  ID      : {BranchId}");
-            Console.WriteLine($"  Name    : {BranchName}");
-            Console.WriteLine($"  Address : {Address}");
-            Console.WriteLine($"  Phone   : {Phone}");
-            Console.WriteLine($"  Hours   : {OpeningHours}");
-            Console.WriteLine($"  Manager : {Manager.Name}");
-            Console.WriteLine($"  Members : {Members.Count}");
-            Console.WriteLine($"  Copies  : {Copies.Count}");
+            ThemeHelper.PrintHeader("LIBRARY BRANCH INFO");
+            Console.WriteLine($"ID : {BranchId}");
+            Console.WriteLine($"Name : {BranchName}");
+            Console.WriteLine($"Address : {Address}");
+            Console.WriteLine($"Phone : {Phone}");
+            Console.WriteLine($"Opening Hours : {OpeningHours}");
+            Console.WriteLine($"Manager : {Manager.Name}");
+            Console.WriteLine($"Total Members : {Members.Count}");
+            Console.WriteLine($"Total Book Copies : {Copies.Count}");
         }
     }
 }

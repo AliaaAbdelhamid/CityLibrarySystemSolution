@@ -14,21 +14,19 @@ namespace CityLibrarySystem.Helpers
 
             // ── Branch ───────────────────────────────────────────────
             LibraryBranch branch = new(
-                "BR-001", "Downtown Branch", "12 Tahrir St, Cairo",
-                "0222345678", "9:00 AM - 9:00 PM", manager);
+                "BR-01", "City Library — Nasr City Branch", "15 Nasr Road, Nasr City, Cairo",
+                "01012345678", "Sat–Thu: 09:00 AM – 09:00 PM", manager);
 
             // ── Members ──────────────────────────────────────────────
-            Member m1 = new(
-                "MEM-001", "Ahmed Kamal",
+            Member m1 = new("Ahmed Kamal",
                 new DateOnly(1998, 5, 10), "ahmed@email.com",
                 "01098765432", new DateOnly(2023, 1, 20));
 
-            Member m2 = new(
-                "MEM-002", "Nour Hassan",
+            Member m2 = new("Nour Hassan",
                 new DateOnly(2001, 8, 22), "nour@email.com",
                 "01155556677", new DateOnly(2024, 3, 5));
 
-            Member m3 = new("MEM-003", "Omar Samir", "01234567890");
+            Member m3 = new("Omar Samir", "01234567890");
 
             branch.RegisterMember(m1);
             branch.RegisterMember(m2);
@@ -53,6 +51,7 @@ namespace CityLibrarySystem.Helpers
             branch.AddBookCopy(c2);
             branch.AddBookCopy(c3);
             branch.AddBookCopy(c4);
+
 
             Console.Clear();
             return branch;

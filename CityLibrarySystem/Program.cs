@@ -8,7 +8,7 @@ namespace CityLibrarySystem
         static void Main(string[] args)
         {
             LibraryBranch branch = DataSeeder.Seed();
-            LibraryHelper libHelper = new LibraryHelper(branch);
+            LibraryHelper libHelper = new(branch);
 
             bool running = true;
             while (running)
@@ -16,7 +16,7 @@ namespace CityLibrarySystem
                 try
                 {
                     ConsoleHelper.ShowMenu();
-                    string choice = Console.ReadLine()?.Trim();
+                    string? choice = Console.ReadLine()?.Trim();
                     Console.WriteLine();
 
                     switch (choice)

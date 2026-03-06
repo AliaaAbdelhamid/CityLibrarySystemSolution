@@ -67,7 +67,7 @@ namespace CityLibrarySystem.Models
         public void DisplayInfo()
         {
             string avail = IsAvailable() ? "Available" : $"{Status}";
-            Console.WriteLine($"  Copy [{CopyId}] — {Book.Title} | Condition: {Condition} | {avail}");
+            Console.WriteLine($"Copy [{CopyId}] — {Book.Title} | Condition: {Condition} | {avail}");
         }
     }
 }

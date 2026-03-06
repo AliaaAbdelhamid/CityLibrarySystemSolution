@@ -20,7 +20,7 @@ namespace CityLibrarySystem.Models
         // Method Overriding — different display from Member
         public override void DisplayInfo()
         {
-            ThemeHelper.PrintHeader("         LIBRARIAN PROFILE            ");
+            ThemeHelper.PrintSectionTitle("LIBRARIAN PROFILE");
             Console.WriteLine($"  ID      : {LibrarianId}");
             Console.WriteLine($"  Name    : {Name}");
             Console.WriteLine($"  Phone   : {Phone}");

@@ -15,9 +15,10 @@ namespace CityLibrarySystem.Helpers
             ThemeHelper.PrintOption("6. Return a Book");
             ThemeHelper.PrintOption("7. Member Borrowing History");
             ThemeHelper.PrintOption("8. Register New Member");
+            Console.WriteLine(new string('-', 40));
             ThemeHelper.PrintOption("0. Exit");
-            Console.WriteLine("========================================");
-            Console.Write("  Choose: ");
+            Console.WriteLine(new string('=', 40));
+            Console.Write("Enter your choice: ");
         }
     }
 }
