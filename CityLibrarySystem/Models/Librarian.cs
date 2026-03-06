@@ -5,9 +5,9 @@ namespace CityLibrarySystem.Models
 {
     class Librarian : LibraryUser
     {
-        private string LibrarianId;
-        private decimal Salary;
-        private DateTime HireDate;
+        public string LibrarianId { get; private set; }
+        public decimal Salary { get; private set; }
+        public DateTime HireDate { get; private set; }
 
         public Librarian(string librarianId, string name, string phone,
                          decimal salary, DateTime hireDate)

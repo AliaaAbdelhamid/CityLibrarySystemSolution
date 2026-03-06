@@ -6,16 +6,14 @@ namespace CityLibrarySystem.Models
     // Member and Librarian inherit the contract and must override DisplayInfo()
     abstract class LibraryUser : IDisplayable
     {
-        protected string Name;
-        protected string Phone;
+        public string Name { get; protected set; }
+        public string Phone { get; protected set; }
 
         public LibraryUser(string name, string phone)
         {
             Name = name;
             Phone = phone;
         }
-
-        public string GetName() => Name;
 
         public abstract void DisplayInfo();
     }

@@ -4,11 +4,12 @@ namespace CityLibrarySystem.Models
 {
     class Book : IDisplayable
     {
-        private string ISBN;
-        private string Title;
-        private string AuthorName;
-        private string Category;
-        private int PublicationYear;
+        public string ISBN { get; private set; }
+        public string Title { get; private set; }
+        public string AuthorName { get; private set; }
+        public string Category { get; private set; }
+        public int PublicationYear { get; private set; }
+
 
         // Constructor 1 — full details
         public Book(string isbn, string title, string authorName,
@@ -22,18 +23,9 @@ namespace CityLibrarySystem.Models
         }
 
         // Constructor 2 — minimal
-        public Book(string isbn, string title)
+        public Book(string isbn, string title):this(isbn , title , "Unknown" , "General" , 0)
         {
-            ISBN = isbn;
-            Title = title;
-            AuthorName = "Unknown";
-            Category = "General";
-            PublicationYear = 0;
         }
-
-        public string GetISBN() => ISBN;
-        public string GetTitle() => Title;
-        public string GetAuthor() => AuthorName;
 
         // IDisplayable
         public void DisplayInfo()

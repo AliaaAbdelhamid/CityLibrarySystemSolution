@@ -6,13 +6,11 @@ namespace CityLibrarySystem.Models
 {
     class Member : LibraryUser
     {
-        private string MembershipId;
-        private DateTime DateOfBirth;
-        private string Email;
-        private DateTime MembershipDate;
-
-        private List<BorrowTransaction> Transactions = new List<BorrowTransaction>();
-
+        public string MembershipId { get; private set; }
+        public DateTime DateOfBirth { get; private set; }
+        public string Email { get; private set; }
+        public DateTime MembershipDate { get; private set; }
+        public List<BorrowTransaction> Transactions { get; private set; } = new List<BorrowTransaction>();
         // Constructor 1 — full details
         public Member(string membershipId, string name, DateTime dob,
                       string email, string phone, DateTime membershipDate)
@@ -34,17 +32,12 @@ namespace CityLibrarySystem.Models
             MembershipDate = DateTime.Today;
         }
 
-        public string GetMembershipId() => MembershipId;
-
         public void AddTransaction(BorrowTransaction t) => Transactions.Add(t);
-
-        public List<BorrowTransaction> GetTransactions() => Transactions;
 
         // Method Overriding
         public override void DisplayInfo()
         {
             ThemeHelper.PrintHeader(" MEMBER PROFILE ");
-
             Console.WriteLine($"  ID      : {MembershipId}");
             Console.WriteLine($"  Name    : {Name}");
             Console.WriteLine($"  Phone   : {Phone}");

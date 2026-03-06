@@ -8,17 +8,16 @@ namespace CityLibrarySystem.Models
 {
     class LibraryBranch : IDisplayable
     {
-        private string BranchId;
-        private string BranchName;
-        private string Address;
-        private string Phone;
-        private string OpeningHours;
-        private Librarian Manager;
+        public string BranchId { get; private set; }
+        public string BranchName { get; private set; }
+        public string Address { get; private set; }
+        public string Phone { get; private set; }
+        public string OpeningHours { get; private set; }
+        public Librarian Manager { get; private set; }
 
-        private List<BookCopy> Copies = new List<BookCopy>();
-        private List<Member> Members = new List<Member>();
-        private List<LibraryUser> Users = new List<LibraryUser>(); 
-
+        public List<BookCopy> Copies { get; private set; } = new List<BookCopy>();
+        public List<Member> Members { get; private set; } = new List<Member>();
+        public List<LibraryUser> Users { get; private set; } = new List<LibraryUser>();
         public LibraryBranch(string branchId, string name, string address,
                              string phone, string openingHours, Librarian manager)
         {
@@ -37,14 +36,14 @@ namespace CityLibrarySystem.Models
         {
             Members.Add(member);
             Users.Add(member);
-            ThemeHelper.PrintSuccess($"Member : {member.GetName()} - [{member.GetMembershipId()}] registered.");
+            ThemeHelper.PrintSuccess($"Member : {member.Name} - [{member.MembershipId}] registered.");
         }
 
         public Member FindMember(string membershipId)
         {
             foreach (Member member in Members)
             {
-                if(member.GetMembershipId() == membershipId)
+                if (member.MembershipId == membershipId)
                     return member;
             }
             throw new InvalidOperationException("Member Not Found");
@@ -55,14 +54,14 @@ namespace CityLibrarySystem.Models
         public void AddBookCopy(BookCopy copy)
         {
             Copies.Add(copy);
-            ThemeHelper.PrintSuccess($"Copy [{copy.GetCopyId()}] - {copy.GetBookTitle()} : added to branch.");
+            ThemeHelper.PrintSuccess($"Copy [{copy.CopyId}] - {copy.Book.Title} : added to branch.");
         }
 
         public BookCopy FindCopy(string copyId)
         {
             foreach (BookCopy bookCopy in Copies)
             {
-                if (bookCopy.GetCopyId() == copyId)
+                if (bookCopy.CopyId == copyId)
                     return bookCopy;
             }
             throw new InvalidOperationException("Book Copy Not Found");
@@ -107,7 +106,7 @@ namespace CityLibrarySystem.Models
             Console.WriteLine($"  Address : {Address}");
             Console.WriteLine($"  Phone   : {Phone}");
             Console.WriteLine($"  Hours   : {OpeningHours}");
-            Console.WriteLine($"  Manager : {Manager.GetName()}");
+            Console.WriteLine($"  Manager : {Manager.Name}");
             Console.WriteLine($"  Members : {Members.Count}");
             Console.WriteLine($"  Copies  : {Copies.Count}");
         }

@@ -4,20 +4,20 @@ namespace CityLibrarySystem.Models
 {
     class BorrowTransaction
     {
-        private static int Counter = 1000;   // auto-increment ID
+        private static int _counter = 1000;
 
-        private int TransactionId;
-        private Member Member;
-        private BookCopy BookCopy;
-        private DateTime BorrowDate;
-        private DateTime DueDate;
-        private DateTime? ReturnDate;        // null until returned
+        public int TransactionId { get; private set; }
+        public Member Member { get; private set; }
+        public BookCopy BookCopy { get; private set; }
+        public DateTime BorrowDate { get; private set; }
+        public DateTime DueDate { get; private set; }
+        public DateTime? ReturnDate { get; private set; }
 
-        private const decimal FinePerDay = 10m;   // 10 EGP per day
+        private const decimal FinePerDay = 10m;
 
         public BorrowTransaction(Member member, BookCopy copy, int loanDays)
         {
-            TransactionId = ++Counter;
+            TransactionId = ++_counter;
             Member = member;
             BookCopy = copy;
             BorrowDate = DateTime.Today;
@@ -44,7 +44,6 @@ namespace CityLibrarySystem.Models
             return overdueDays > 0 ? overdueDays * FinePerDay : 0;
         }
 
-        public int GetTransactionId() => TransactionId;
 
         public void DisplayTransaction()
         {
@@ -53,8 +52,8 @@ namespace CityLibrarySystem.Models
             string returnInfo = ReturnDate.HasValue ? ReturnDate.Value.ToString("dd/MM/yyyy") : "Not returned yet";
 
             Console.WriteLine($"── Transaction #{TransactionId} ──────────────");
-            Console.WriteLine($"  Book      : {BookCopy.GetBookTitle()}");
-            Console.WriteLine($"  Copy ID   : {BookCopy.GetCopyId()}");
+            Console.WriteLine($"  Book      : {BookCopy.Book.Title}");
+            Console.WriteLine($"  Copy ID   : {BookCopy.CopyId}");
             Console.WriteLine($"  Borrowed  : {BorrowDate:dd/MM/yyyy}");
             Console.WriteLine($"  Due       : {DueDate:dd/MM/yyyy}");
             Console.WriteLine($"  Returned  : {returnInfo}");
