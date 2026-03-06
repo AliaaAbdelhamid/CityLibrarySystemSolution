@@ -1,19 +1,19 @@
 ﻿using ConsoleTheme;
-using System;
-using System.Collections.Generic;
 
 namespace CityLibrarySystem.Models
 {
     class Member : LibraryUser
     {
         public string MembershipId { get; private set; }
-        public DateTime DateOfBirth { get; private set; }
-        public string Email { get; private set; }
+        public DateTime? DateOfBirth { get; private set; }   // null = not provided
+        public string? Email { get; private set; }   // null = not provided
         public DateTime MembershipDate { get; private set; }
-        public List<BorrowTransaction> Transactions { get; private set; } = new List<BorrowTransaction>();
+        private List<BorrowTransaction> _transactions = new();
+
+        public IReadOnlyList<BorrowTransaction> Transactions => _transactions;
         // Constructor 1 — full details
-        public Member(string membershipId, string name, DateTime dob,
-                      string email, string phone, DateTime membershipDate)
+        public Member(string membershipId, string name, DateTime? dob,
+                      string? email, string phone, DateTime membershipDate)
             : base(name, phone)
         {
             MembershipId = membershipId;
@@ -24,15 +24,12 @@ namespace CityLibrarySystem.Models
 
         // Constructor 2 — minimal (membership date defaults to today)
         public Member(string membershipId, string name, string phone)
-            : base(name, phone)
+            : this(membershipId, name, null, null, phone, DateTime.Now)
         {
-            MembershipId = membershipId;
-            DateOfBirth = DateTime.MinValue;
-            Email = "N/A";
-            MembershipDate = DateTime.Today;
+
         }
 
-        public void AddTransaction(BorrowTransaction t) => Transactions.Add(t);
+        public void AddTransaction(BorrowTransaction t) => _transactions.Add(t);
 
         // Method Overriding
         public override void DisplayInfo()
@@ -41,7 +38,7 @@ namespace CityLibrarySystem.Models
             Console.WriteLine($"  ID      : {MembershipId}");
             Console.WriteLine($"  Name    : {Name}");
             Console.WriteLine($"  Phone   : {Phone}");
-            Console.WriteLine($"  Email   : {Email}");
+            Console.WriteLine($"  Email   : {Email ?? "N/A"}");
             Console.WriteLine($"  Joined  : {MembershipDate:dd/MM/yyyy}");
             Console.WriteLine($"  Borrows : {Transactions.Count}");
         }

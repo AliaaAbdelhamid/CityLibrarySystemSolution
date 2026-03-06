@@ -1,11 +1,5 @@
 ﻿using CityLibrarySystem.Models;
 using ConsoleTheme;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace CityLibrarySystem.Helpers
 {
@@ -28,9 +22,9 @@ namespace CityLibrarySystem.Helpers
 
         }
 
-        public void HandleReturn()  
+        public void HandleReturn()
         {
-            BookCopy? copy = _branch.FindCopy(ThemeHelper.Prompt("Enter Copy ID to return: "));
+            BookCopy copy = _branch.FindCopy(ThemeHelper.Prompt("Enter Copy ID to return: "));
             copy.Return();
 
         }

@@ -1,5 +1,4 @@
-﻿using System;
-using ConsoleTheme;
+﻿using ConsoleTheme;
 namespace CityLibrarySystem.Models
 {
     class BorrowTransaction
@@ -59,7 +58,7 @@ namespace CityLibrarySystem.Models
             Console.WriteLine($"  Returned  : {returnInfo}");
             Console.WriteLine($"  Status    : {status}");
             if (fine > 0)
-                ThemeHelper.PrintWarning($" Fine   : {fine:C}");
+                ThemeHelper.PrintWarning($"  Fine      : {fine:F2} EGP");
             else
                 ThemeHelper.PrintSuccess("  Fine      : None");
         }

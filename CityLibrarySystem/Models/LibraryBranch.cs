@@ -1,7 +1,4 @@
-﻿using CityLibrarySystem.Models;
-using CityLibrarySystem.Contracts;
-using System;
-using System.Collections.Generic;
+﻿using CityLibrarySystem.Contracts;
 using ConsoleTheme;
 
 namespace CityLibrarySystem.Models
@@ -15,9 +12,14 @@ namespace CityLibrarySystem.Models
         public string OpeningHours { get; private set; }
         public Librarian Manager { get; private set; }
 
-        public List<BookCopy> Copies { get; private set; } = new List<BookCopy>();
-        public List<Member> Members { get; private set; } = new List<Member>();
-        public List<LibraryUser> Users { get; private set; } = new List<LibraryUser>();
+        private List<BookCopy> _copies = new();
+        private List<Member> _members = new();
+        private List<LibraryUser> _users = new();
+
+        public IReadOnlyList<BookCopy> Copies => _copies;
+        public IReadOnlyList<Member> Members => _members;
+        public IReadOnlyList<LibraryUser> Users => _users;
+
         public LibraryBranch(string branchId, string name, string address,
                              string phone, string openingHours, Librarian manager)
         {
@@ -27,15 +29,15 @@ namespace CityLibrarySystem.Models
             Phone = phone;
             OpeningHours = openingHours;
             Manager = manager;
-            Users.Add(manager);
+            _users.Add(manager);
         }
 
         // ── Members ──────────────────────────────────────────────
 
         public void RegisterMember(Member member)
         {
-            Members.Add(member);
-            Users.Add(member);
+            _members.Add(member);
+            _users.Add(member);
             ThemeHelper.PrintSuccess($"Member : {member.Name} - [{member.MembershipId}] registered.");
         }
 
@@ -53,7 +55,7 @@ namespace CityLibrarySystem.Models
 
         public void AddBookCopy(BookCopy copy)
         {
-            Copies.Add(copy);
+            _copies.Add(copy);
             ThemeHelper.PrintSuccess($"Copy [{copy.CopyId}] - {copy.Book.Title} : added to branch.");
         }
 
@@ -75,7 +77,7 @@ namespace CityLibrarySystem.Models
             {
                 if (c.IsAvailable())
                 {
-                    c.DisplayInfo(); 
+                    c.DisplayInfo();
                     any = true;
                 }
             }
@@ -87,14 +89,14 @@ namespace CityLibrarySystem.Models
             ThemeHelper.PrintHeader(" All Book Copies:");
             if (Copies.Count == 0) { ThemeHelper.PrintWarning("  No copies in branch."); return; }
             foreach (BookCopy c in Copies)
-                c.DisplayInfo();      
+                c.DisplayInfo();
         }
 
         public void ShowAllUsers()
         {
             ThemeHelper.PrintHeader(" All Registered Users:");
             foreach (LibraryUser user in Users)
-                user.DisplayInfo();    
+                user.DisplayInfo();
         }
 
 

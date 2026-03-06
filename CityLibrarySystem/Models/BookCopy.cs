@@ -1,7 +1,5 @@
-﻿using CityLibrarySystem.Models;
+﻿using CityLibrarySystem.Contracts;
 using CityLibrarySystem.Models.Enums;
-using CityLibrarySystem.Contracts;
-using System;
 using ConsoleTheme;
 
 namespace CityLibrarySystem.Models
@@ -55,7 +53,7 @@ namespace CityLibrarySystem.Models
             ThemeHelper.PrintSuccess($"Copy [{CopyId}] : {Book.Title} returned.");
 
             if (fine > 0)
-                ThemeHelper.PrintWarning($"Late return fine: {fine:C} EGP");
+                ThemeHelper.PrintWarning($"Late return fine: {fine:F2} EGP");
             else
                 ThemeHelper.PrintSuccess("Returned on time. No fine.");
 

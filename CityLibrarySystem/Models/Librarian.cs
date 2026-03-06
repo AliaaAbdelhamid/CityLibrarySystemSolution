@@ -1,5 +1,4 @@
-﻿using CityLibrarySystem.Models;
-using ConsoleTheme;
+﻿using ConsoleTheme;
 
 namespace CityLibrarySystem.Models
 {
