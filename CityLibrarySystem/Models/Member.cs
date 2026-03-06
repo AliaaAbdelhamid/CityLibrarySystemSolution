@@ -5,15 +5,15 @@ namespace CityLibrarySystem.Models
     class Member : LibraryUser
     {
         public string MembershipId { get; private set; }
-        public DateTime? DateOfBirth { get; private set; }   // null = not provided
+        public DateOnly? DateOfBirth { get; private set; }   // null = not provided
         public string? Email { get; private set; }   // null = not provided
-        public DateTime MembershipDate { get; private set; }
+        public DateOnly MembershipDate { get; private set; }
         private List<BorrowTransaction> _transactions = new();
 
         public IReadOnlyList<BorrowTransaction> Transactions => _transactions;
         // Constructor 1 — full details
-        public Member(string membershipId, string name, DateTime? dob,
-                      string? email, string phone, DateTime membershipDate)
+        public Member(string membershipId, string name, DateOnly? dob,
+                      string? email, string phone, DateOnly membershipDate)
             : base(name, phone)
         {
             MembershipId = membershipId;
@@ -24,7 +24,7 @@ namespace CityLibrarySystem.Models
 
         // Constructor 2 — minimal (membership date defaults to today)
         public Member(string membershipId, string name, string phone)
-            : this(membershipId, name, null, null, phone, DateTime.Now)
+            : this(membershipId, name, null, null, phone, DateOnly.FromDateTime(DateTime.Today))
         {
 
         }

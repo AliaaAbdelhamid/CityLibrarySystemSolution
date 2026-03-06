@@ -46,7 +46,7 @@ namespace CityLibrarySystem.Models
             if (Status != CopyStatus.Borrowed)
                 throw new InvalidOperationException($"Copy {CopyId} is not currently borrowed.");
 
-            ActiveTransaction.MarkReturned(DateTime.Today);
+            ActiveTransaction.MarkReturned(DateOnly.FromDateTime(DateTime.Today));
             decimal fine = ActiveTransaction.CalculateFine();
             Status = CopyStatus.Available;
 

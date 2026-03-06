@@ -10,7 +10,7 @@ namespace CityLibrarySystem.Helpers
             Librarian manager = new(
                 "LIB-01", "Sara Ahmed", "01012345678",
                 salary: 8500m,
-                hireDate: new DateTime(2019, 3, 15));
+                hireDate: new DateOnly(2019, 3, 15));
 
             // ── Branch ───────────────────────────────────────────────
             LibraryBranch branch = new(
@@ -20,13 +20,13 @@ namespace CityLibrarySystem.Helpers
             // ── Members ──────────────────────────────────────────────
             Member m1 = new(
                 "MEM-001", "Ahmed Kamal",
-                new DateTime(1998, 5, 10), "ahmed@email.com",
-                "01098765432", new DateTime(2023, 1, 20));
+                new DateOnly(1998, 5, 10), "ahmed@email.com",
+                "01098765432", new DateOnly(2023, 1, 20));
 
             Member m2 = new(
                 "MEM-002", "Nour Hassan",
-                new DateTime(2001, 8, 22), "nour@email.com",
-                "01155556677", new DateTime(2024, 3, 5));
+                new DateOnly(2001, 8, 22), "nour@email.com",
+                "01155556677", new DateOnly(2024, 3, 5));
 
             Member m3 = new("MEM-003", "Omar Samir", "01234567890");
 

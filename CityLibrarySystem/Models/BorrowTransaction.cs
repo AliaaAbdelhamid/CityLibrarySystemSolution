@@ -8,9 +8,9 @@ namespace CityLibrarySystem.Models
         public int TransactionId { get; private set; }
         public Member Member { get; private set; }
         public BookCopy BookCopy { get; private set; }
-        public DateTime BorrowDate { get; private set; }
-        public DateTime DueDate { get; private set; }
-        public DateTime? ReturnDate { get; private set; }
+        public DateOnly BorrowDate { get; private set; }
+        public DateOnly DueDate { get; private set; }
+        public DateOnly? ReturnDate { get; private set; }
 
         private const decimal FinePerDay = 10m;
 
@@ -19,27 +19,27 @@ namespace CityLibrarySystem.Models
             TransactionId = ++_counter;
             Member = member;
             BookCopy = copy;
-            BorrowDate = DateTime.Today;
-            DueDate = DateTime.Today.AddDays(loanDays);
+            BorrowDate = DateOnly.FromDateTime(DateTime.Today);
+            DueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(loanDays));
             ReturnDate = null;
         }
 
         public bool IsReturned() => ReturnDate.HasValue;
 
-        public void MarkReturned(DateTime returnDate) => ReturnDate = returnDate;
+        public void MarkReturned(DateOnly returnDate) => ReturnDate = returnDate;
 
         // Method Overload 1 — fine using today's date
         public decimal CalculateFine()
         {
-            DateTime effective = ReturnDate ?? DateTime.Today;
-            int overdueDays = (effective - DueDate).Days;
+            DateOnly effective = ReturnDate ?? DateOnly.FromDateTime(DateTime.Today);
+            int overdueDays = effective.DayNumber - DueDate.DayNumber;
             return overdueDays > 0 ? overdueDays * FinePerDay : 0;
         }
 
         // Method Overload 2 — fine for a specific return date
-        public decimal CalculateFine(DateTime returnDate)
+        public decimal CalculateFine(DateOnly returnDate)
         {
-            int overdueDays = (returnDate - DueDate).Days;
+            int overdueDays = returnDate.DayNumber - DueDate.DayNumber;
             return overdueDays > 0 ? overdueDays * FinePerDay : 0;
         }
 
