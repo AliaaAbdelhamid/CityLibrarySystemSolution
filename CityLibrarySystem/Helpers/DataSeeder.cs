@@ -18,19 +18,14 @@ namespace CityLibrarySystem.Helpers
                 "01012345678", "Sat–Thu: 09:00 AM – 09:00 PM", manager);
 
             // ── Members ──────────────────────────────────────────────
-            Member m1 = new("Ahmed Kamal",
+
+            branch.RegisterMember("Ahmed Kamal",
                 new DateOnly(1998, 5, 10), "ahmed@email.com",
                 "01098765432", new DateOnly(2023, 1, 20));
-
-            Member m2 = new("Nour Hassan",
+            branch.RegisterMember("Nour Hassan",
                 new DateOnly(2001, 8, 22), "nour@email.com",
                 "01155556677", new DateOnly(2024, 3, 5));
-
-            Member m3 = new("Omar Samir", "01234567890");
-
-            branch.RegisterMember(m1);
-            branch.RegisterMember(m2);
-            branch.RegisterMember(m3);
+            branch.RegisterMember("Omar Samir", "01234567890");
 
             // ── Books ────────────────────────────────────────────────
             Book b1 = new("978-0-13-468599-1", "Clean Code",

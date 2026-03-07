@@ -1,6 +1,6 @@
 ﻿namespace CityLibrarySystem.Models.Enums
 {
-    enum CopyStatus
+    public enum CopyStatus
     {
         Available,
         Borrowed,

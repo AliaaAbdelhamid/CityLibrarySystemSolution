@@ -2,6 +2,6 @@
 {
     interface IDisplayable
     {
-        void DisplayInfo();
+        string ToDisplayString();
     }
 }

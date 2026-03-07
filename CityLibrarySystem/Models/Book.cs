@@ -2,7 +2,7 @@
 
 namespace CityLibrarySystem.Models
 {
-    class Book : IDisplayable
+    public class Book : IDisplayable
     {
         public string ISBN { get; private set; }
         public string Title { get; private set; }
@@ -23,14 +23,11 @@ namespace CityLibrarySystem.Models
         }
 
         // Constructor 2 — minimal
-        public Book(string isbn, string title):this(isbn , title , "Unknown" , "General" , 0)
+        public Book(string isbn, string title) : this(isbn, title, "Unknown", "General", 0)
         {
         }
 
         // IDisplayable
-        public void DisplayInfo()
-        {
-            Console.WriteLine($"[{ISBN}] \"{Title}\" by {AuthorName} ({PublicationYear}) — {Category}");
-        }
+        public string ToDisplayString() => $"[{ISBN}] \"{Title}\" by {AuthorName} ({PublicationYear}) — {Category}";
     }
 }

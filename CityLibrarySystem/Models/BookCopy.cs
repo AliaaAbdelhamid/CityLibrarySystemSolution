@@ -1,13 +1,12 @@
 ﻿using CityLibrarySystem.Contracts;
 using CityLibrarySystem.Models.Enums;
-using ConsoleTheme;
 
 namespace CityLibrarySystem.Models
 {
     // BookCopy implements BOTH interfaces:
     // IBorrowable  — borrowing contract
     // IDisplayable — display contract
-    class BookCopy : IBorrowable, IDisplayable
+    public class BookCopy : IBorrowable, IDisplayable
     {
         public string CopyId { get; private set; }
         public string Condition { get; private set; }
@@ -32,16 +31,12 @@ namespace CityLibrarySystem.Models
             Status = CopyStatus.Borrowed;
             ActiveTransaction = new BorrowTransaction(member, this, loanDays);
             member.AddTransaction(ActiveTransaction);
-
-            ThemeHelper.PrintSuccess($"Copy [{CopyId}] \"{Book.Title}\" borrowed by {member.Name}.");
-            ThemeHelper.PrintSuccess($"Due date: {DateTime.Today.AddDays(loanDays):dd/MM/yyyy}");
         }
-
         // IBorrowable — Return
-        public void Return()
+        public decimal Return()
         {
             if (ActiveTransaction == null)
-                throw new InvalidOperationException("No Active Transactions");
+                throw new InvalidOperationException("No active transaction for this copy.");
 
             if (Status != CopyStatus.Borrowed)
                 throw new InvalidOperationException($"Copy {CopyId} is not currently borrowed.");
@@ -49,25 +44,19 @@ namespace CityLibrarySystem.Models
             ActiveTransaction.MarkReturned(DateOnly.FromDateTime(DateTime.Today));
             decimal fine = ActiveTransaction.CalculateFine();
             Status = CopyStatus.Available;
-
-            ThemeHelper.PrintSuccess($"Copy [{CopyId}] : {Book.Title} returned.");
-
-            if (fine > 0)
-                ThemeHelper.PrintWarning($"Late return fine: {fine:F2} EGP");
-            else
-                ThemeHelper.PrintSuccess("Returned on time. No fine.");
-
             ActiveTransaction = null;
+
+            return fine;
         }
 
         // IBorrowable — IsAvailable
         public bool IsAvailable() => Status == CopyStatus.Available;
 
         // IDisplayable
-        public void DisplayInfo()
+        public string ToDisplayString()
         {
             string avail = IsAvailable() ? "Available" : $"{Status}";
-            Console.WriteLine($"Copy [{CopyId}] — {Book.Title} | Condition: {Condition} | {avail}");
+            return $"Copy [{CopyId}] — {Book.Title} | Condition: {Condition} | {avail}";
         }
     }
 }

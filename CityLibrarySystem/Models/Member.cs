@@ -1,8 +1,8 @@
-﻿using ConsoleTheme;
+﻿using System.Text;
 
 namespace CityLibrarySystem.Models
 {
-    class Member : LibraryUser
+    public class Member : LibraryUser
     {
         private static int _counter = 1;
         public string MembershipId { get; private set; }
@@ -34,27 +34,29 @@ namespace CityLibrarySystem.Models
         public void AddTransaction(BorrowTransaction t) => _transactions.Add(t);
 
         // Method Overriding
-        public override void DisplayInfo()
-        {
-            ThemeHelper.PrintSectionTitle("MEMBER PROFILE");
-            Console.WriteLine($"  ID      : {MembershipId}");
-            Console.WriteLine($"  Name    : {Name}");
-            Console.WriteLine($"  Phone   : {Phone}");
-            Console.WriteLine($"  Email   : {Email ?? "N/A"}");
-            Console.WriteLine($"  Joined  : {MembershipDate:dd/MM/yyyy}");
-            Console.WriteLine($"  Borrows : {Transactions.Count}");
-        }
+        public override string ToDisplayString() => $"""
+                                                      ID      : {MembershipId}
+                                                      Name    : {Name}
+                                                      Phone   : {Phone}
+                                                      Email   : {Email ?? "N/A"}
+                                                      Joined  : {MembershipDate:dd/MM/yyyy}
+                                                      Borrows : {Transactions.Count}
+                                                    """;
 
-        public void ShowHistory()
+        public string GetHistoryDisplayString()
         {
-            ThemeHelper.PrintSectionTitle($" Borrowing History for {Name}:");
             if (Transactions.Count == 0)
+                return "  No transactions found.";
+
+            var sb = new StringBuilder();
+            for (int i = 0; i < Transactions.Count; i++)
             {
-                ThemeHelper.PrintWarning("  No transactions found.");
-                return;
+                if (i > 0)
+                    sb.AppendLine();
+                sb.Append(Transactions[i].ToDisplayString());
             }
-            foreach (var t in Transactions)
-                t.DisplayTransaction();
+            return sb.ToString();
         }
     }
 }
+

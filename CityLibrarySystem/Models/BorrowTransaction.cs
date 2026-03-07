@@ -1,9 +1,9 @@
-﻿using ConsoleTheme;
-namespace CityLibrarySystem.Models
+﻿namespace CityLibrarySystem.Models
 {
-    class BorrowTransaction
+    public class BorrowTransaction
     {
         private static int _counter = 1000;
+        private const decimal FinePerDay = 10m;
 
         public int TransactionId { get; private set; }
         public Member Member { get; private set; }
@@ -12,7 +12,6 @@ namespace CityLibrarySystem.Models
         public DateOnly DueDate { get; private set; }
         public DateOnly? ReturnDate { get; private set; }
 
-        private const decimal FinePerDay = 10m;
 
         public BorrowTransaction(Member member, BookCopy copy, int loanDays)
         {
@@ -43,24 +42,23 @@ namespace CityLibrarySystem.Models
             return overdueDays > 0 ? overdueDays * FinePerDay : 0;
         }
 
-
-        public void DisplayTransaction()
+        public string ToDisplayString()
         {
             string status = ReturnDate.HasValue ? "Returned" : "Active";
             decimal fine = CalculateFine();
             string returnInfo = ReturnDate.HasValue ? ReturnDate.Value.ToString("dd/MM/yyyy") : "Not returned yet";
+            string fineLine = fine > 0 ? $"{fine:F2} EGP" : "None";
 
-            Console.WriteLine($"── Transaction #{TransactionId} ──────────────");
-            Console.WriteLine($"  Book      : {BookCopy.Book.Title}");
-            Console.WriteLine($"  Copy ID   : {BookCopy.CopyId}");
-            Console.WriteLine($"  Borrowed  : {BorrowDate:dd/MM/yyyy}");
-            Console.WriteLine($"  Due       : {DueDate:dd/MM/yyyy}");
-            Console.WriteLine($"  Returned  : {returnInfo}");
-            Console.WriteLine($"  Status    : {status}");
-            if (fine > 0)
-                ThemeHelper.PrintWarning($"  Fine      : {fine:F2} EGP");
-            else
-                ThemeHelper.PrintSuccess("  Fine      : None");
+            return $"""
+                    ── Transaction #{TransactionId} ──────────────
+                      Book      : {BookCopy.Book.Title}
+                      Copy ID   : {BookCopy.CopyId}
+                      Borrowed  : {BorrowDate:dd/MM/yyyy}
+                      Due       : {DueDate:dd/MM/yyyy}
+                      Returned  : {returnInfo}
+                      Status    : {status}
+                      Fine      : {fineLine}
+                    """;
         }
     }
 }

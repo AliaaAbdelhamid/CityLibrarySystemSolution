@@ -1,5 +1,6 @@
 ﻿using CityLibrarySystem.Helpers;
 using CityLibrarySystem.Models;
+using CityLibrarySystem.Services;
 
 namespace CityLibrarySystem
 {
@@ -8,7 +9,8 @@ namespace CityLibrarySystem
         static void Main(string[] args)
         {
             LibraryBranch branch = DataSeeder.Seed();
-            LibraryHelper libHelper = new(branch);
+            var display = new DisplayService();
+            var libraryService = new LibraryService(branch, display);
 
             bool running = true;
             while (running)
@@ -21,14 +23,14 @@ namespace CityLibrarySystem
 
                     switch (choice)
                     {
-                        case "1": branch.DisplayInfo(); break;
-                        case "2": branch.ShowAllUsers(); break;
-                        case "3": branch.ShowAvailableCopies(); break;
-                        case "4": branch.ShowAllCopies(); break;
-                        case "5": libHelper.HandleBorrow(); break;
-                        case "6": libHelper.HandleReturn(); break;
-                        case "7": libHelper.HandleHistory(); break;
-                        case "8": libHelper.HandleRegisterMember(); break;
+                        case "1": display.ShowBranchInfo(branch); break;
+                        case "2": display.ShowAllUsers(branch); break;
+                        case "3": display.ShowAvailableCopies(branch); break;
+                        case "4": display.ShowAllCopies(branch); break;
+                        case "5": libraryService.HandleBorrow(); break;
+                        case "6": libraryService.HandleReturn(); break;
+                        case "7": libraryService.HandleHistory(); break;
+                        case "8": libraryService.HandleRegisterMember(); break;
                         case "0":
                             Console.WriteLine("  Goodbye!");
                             running = false;
@@ -38,13 +40,12 @@ namespace CityLibrarySystem
                             break;
                     }
                 }
-                catch (Exception ex)
+                catch (InvalidOperationException ex)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine(ex.Message);
                     Console.ResetColor();
                 }
-
 
                 Console.WriteLine("\n  Press any key to continue...");
                 Console.ReadKey(true);

@@ -1,8 +1,6 @@
-﻿using ConsoleTheme;
-
-namespace CityLibrarySystem.Models
+﻿namespace CityLibrarySystem.Models
 {
-    class Librarian : LibraryUser
+    public class Librarian : LibraryUser
     {
         public string LibrarianId { get; private set; }
         public decimal Salary { get; private set; }
@@ -18,14 +16,12 @@ namespace CityLibrarySystem.Models
         }
 
         // Method Overriding — different display from Member
-        public override void DisplayInfo()
-        {
-            ThemeHelper.PrintSectionTitle("LIBRARIAN PROFILE");
-            Console.WriteLine($"  ID      : {LibrarianId}");
-            Console.WriteLine($"  Name    : {Name}");
-            Console.WriteLine($"  Phone   : {Phone}");
-            Console.WriteLine($"  Salary  : {Salary:C}");
-            Console.WriteLine($"  Hired   : {HireDate:dd/MM/yyyy}");
-        }
+        public override string ToDisplayString() => $"""
+                                                     ID      : {LibrarianId}
+                                                     Name    : {Name}
+                                                     Phone   : {Phone}
+                                                     Salary  : {Salary:C}
+                                                     Hired   : {HireDate:dd/MM/yyyy}
+                                                     """;
     }
 }

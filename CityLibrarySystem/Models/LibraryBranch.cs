@@ -1,9 +1,9 @@
 ﻿using CityLibrarySystem.Contracts;
-using ConsoleTheme;
+using CityLibrarySystem.Extensions;
 
 namespace CityLibrarySystem.Models
 {
-    class LibraryBranch : IDisplayable
+    public class LibraryBranch : IDisplayable
     {
         public string BranchId { get; private set; }
         public string BranchName { get; private set; }
@@ -14,12 +14,22 @@ namespace CityLibrarySystem.Models
 
         private List<BookCopy> _copies = new();
         private List<Member> _members = new();
-        private List<LibraryUser> _users = new();
 
         public IReadOnlyList<BookCopy> Copies => _copies;
         public IReadOnlyList<Member> Members => _members;
-        public IReadOnlyList<LibraryUser> Users => _users;
-
+        public IReadOnlyList<LibraryUser> Users
+        {
+            get
+            {
+                List<LibraryUser> users = new();
+                users.Add(Manager);
+                for (int i = 0; i < _members.Count; i++)
+                {
+                    users.Add(_members[i]);
+                }
+                return users;
+            }
+        }
         public LibraryBranch(string branchId, string name, string address,
                              string phone, string openingHours, Librarian manager)
         {
@@ -29,24 +39,31 @@ namespace CityLibrarySystem.Models
             Phone = phone;
             OpeningHours = openingHours;
             Manager = manager;
-            _users.Add(manager);
         }
 
         // ── Members ──────────────────────────────────────────────
 
-        public void RegisterMember(Member member)
+        public Member RegisterMember(string name, string phone)
         {
+            var member = new Member(name, phone);
             _members.Add(member);
-            _users.Add(member);
-            ThemeHelper.PrintSuccess($"Member : {member.Name} - [{member.MembershipId}] registered.");
+            return member;
         }
 
+        public Member RegisterMember(string name, DateOnly? dob, string? email, string phone, DateOnly membershipDate)
+        {
+            var member = new Member(name, dob, email, phone, membershipDate);
+            _members.Add(member);
+            return member;
+        }
         public Member FindMember(string membershipId)
         {
-            foreach (Member member in Members)
+            string normalized = membershipId.NormalizeID();
+
+            for (int i = 0; i < _members.Count; i++)
             {
-                if (member.MembershipId == membershipId)
-                    return member;
+                if (_members[i].MembershipId == normalized)
+                    return _members[i];
             }
             throw new InvalidOperationException("Member Not Found");
         }
@@ -56,65 +73,39 @@ namespace CityLibrarySystem.Models
         public void AddBookCopy(BookCopy copy)
         {
             _copies.Add(copy);
-            ThemeHelper.PrintSuccess($"Copy [{copy.CopyId}] - {copy.Book.Title} : added to branch.");
         }
 
         public BookCopy FindCopy(string copyId)
         {
-            foreach (BookCopy bookCopy in Copies)
+            string normalized = copyId.NormalizeID();
+            for (int i = 0; i < _copies.Count; i++)
             {
-                if (bookCopy.CopyId == copyId)
-                    return bookCopy;
+                if (_copies[i].CopyId == normalized)
+                    return _copies[i];
             }
             throw new InvalidOperationException("Book Copy Not Found");
         }
 
-        public void ShowAvailableCopies()
+        public List<BookCopy> GetAvailableCopies()
         {
-            ThemeHelper.PrintHeader("Available Book Copies");
-            bool any = false;
-            foreach (BookCopy c in Copies)
+            List<BookCopy> availableCopies = new();
+            for (int i = 0; i < _copies.Count; i++)
             {
-                if (c.IsAvailable())
-                {
-                    c.DisplayInfo();
-                    any = true;
-                }
+                if (_copies[i].IsAvailable())
+                    availableCopies.Add(_copies[i]);
             }
-            if (!any) ThemeHelper.PrintWarning("No available book copies found");
+            return availableCopies;
         }
+        public string ToDisplayString() => $"""
+                                           ID             : {BranchId}
+                                           Name           : {BranchName}
+                                           Address        : {Address}
+                                           Phone          : {Phone}
+                                           Opening Hours  : {OpeningHours}
+                                           Manager        : {Manager.Name}
+                                           Total Members  : {_members.Count}
+                                           Total Copies   : {_copies.Count}
+                                         """;
 
-        public void ShowAllCopies()
-        {
-            ThemeHelper.PrintHeader("All Book Copies");
-            if (Copies.Count == 0)
-            {
-                ThemeHelper.PrintWarning("No book copies found");
-                return;
-            }
-            foreach (BookCopy c in Copies)
-                c.DisplayInfo();
-        }
-
-        public void ShowAllUsers()
-        {
-            ThemeHelper.PrintHeader("All Registered Users");
-            foreach (LibraryUser user in Users)
-                user.DisplayInfo();
-        }
-
-
-        public void DisplayInfo()
-        {
-            ThemeHelper.PrintHeader("LIBRARY BRANCH INFO");
-            Console.WriteLine($"ID : {BranchId}");
-            Console.WriteLine($"Name : {BranchName}");
-            Console.WriteLine($"Address : {Address}");
-            Console.WriteLine($"Phone : {Phone}");
-            Console.WriteLine($"Opening Hours : {OpeningHours}");
-            Console.WriteLine($"Manager : {Manager.Name}");
-            Console.WriteLine($"Total Members : {Members.Count}");
-            Console.WriteLine($"Total Book Copies : {Copies.Count}");
-        }
     }
 }
