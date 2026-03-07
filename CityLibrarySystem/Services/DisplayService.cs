@@ -1,8 +1,11 @@
-﻿using CityLibrarySystem.Models;
+using CityLibrarySystem.Models;
 using ConsoleTheme;
 
 namespace CityLibrarySystem.Services
 {
+    /// <summary>
+    /// Handles all console output. Separates presentation from domain (SRP).
+    /// </summary>
     public class DisplayService
     {
         public void ShowBranchInfo(LibraryBranch branch)
@@ -79,5 +82,5 @@ namespace CityLibrarySystem.Services
             ThemeHelper.PrintSuccess($"Copy [{copy.CopyId}] - {copy.Book.Title}: added to branch.");
         }
     }
-
 }
+

@@ -1,4 +1,4 @@
-﻿using CityLibrarySystem.Helpers;
+using CityLibrarySystem.Helpers;
 using CityLibrarySystem.Models;
 using CityLibrarySystem.Services;
 
@@ -47,9 +47,11 @@ namespace CityLibrarySystem
                     Console.ResetColor();
                 }
 
-                Console.WriteLine("\n  Press any key to continue...");
-                Console.ReadKey(true);
-                Console.Clear();
+                Console.WriteLine("\n  Press Enter to continue...");
+                Console.ReadLine();
+
+                try { Console.Clear(); }
+                catch (IOException) { }
             }
         }
     }

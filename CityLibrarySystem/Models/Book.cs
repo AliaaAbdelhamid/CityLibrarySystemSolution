@@ -1,4 +1,4 @@
-﻿using CityLibrarySystem.Contracts;
+using CityLibrarySystem.Contracts;
 
 namespace CityLibrarySystem.Models
 {
@@ -8,10 +8,9 @@ namespace CityLibrarySystem.Models
         public string Title { get; private set; }
         public string AuthorName { get; private set; }
         public string Category { get; private set; }
+        /// <summary>Publication year; 0 indicates unknown.</summary>
         public int PublicationYear { get; private set; }
 
-
-        // Constructor 1 — full details
         public Book(string isbn, string title, string authorName,
                     string category, int publicationYear)
         {
@@ -22,12 +21,12 @@ namespace CityLibrarySystem.Models
             PublicationYear = publicationYear;
         }
 
-        // Constructor 2 — minimal
-        public Book(string isbn, string title) : this(isbn, title, "Unknown", "General", 0)
+        public Book(string isbn, string title)
+            : this(isbn, title, "Unknown", "General", 0)
         {
         }
 
-        // IDisplayable
-        public string ToDisplayString() => $"[{ISBN}] \"{Title}\" by {AuthorName} ({PublicationYear}) — {Category}";
+        public string ToDisplayString() =>
+            $"[{ISBN}] \"{Title}\" by {AuthorName} ({PublicationYear}) — {Category}";
     }
 }

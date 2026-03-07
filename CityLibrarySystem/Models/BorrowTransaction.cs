@@ -1,9 +1,13 @@
-﻿namespace CityLibrarySystem.Models
+namespace CityLibrarySystem.Models
 {
+    /// <summary>
+    /// Represents a borrow transaction. Transaction IDs are process-wide (static counter).
+    /// </summary>
     public class BorrowTransaction
     {
         private static int _counter = 1000;
         private const decimal FinePerDay = 10m;
+        private const string DateFormat = "dd/MM/yyyy";
 
         public int TransactionId { get; private set; }
         public Member Member { get; private set; }
@@ -11,7 +15,6 @@
         public DateOnly BorrowDate { get; private set; }
         public DateOnly DueDate { get; private set; }
         public DateOnly? ReturnDate { get; private set; }
-
 
         public BorrowTransaction(Member member, BookCopy copy, int loanDays)
         {
@@ -27,7 +30,6 @@
 
         public void MarkReturned(DateOnly returnDate) => ReturnDate = returnDate;
 
-        // Method Overload 1 — fine using today's date
         public decimal CalculateFine()
         {
             DateOnly effective = ReturnDate ?? DateOnly.FromDateTime(DateTime.Today);
@@ -35,30 +37,29 @@
             return overdueDays > 0 ? overdueDays * FinePerDay : 0;
         }
 
-        // Method Overload 2 — fine for a specific return date
         public decimal CalculateFine(DateOnly returnDate)
         {
             int overdueDays = returnDate.DayNumber - DueDate.DayNumber;
             return overdueDays > 0 ? overdueDays * FinePerDay : 0;
         }
 
+        /// <summary>Formats transaction for display. Does not write to console.</summary>
         public string ToDisplayString()
         {
             string status = ReturnDate.HasValue ? "Returned" : "Active";
             decimal fine = CalculateFine();
-            string returnInfo = ReturnDate.HasValue ? ReturnDate.Value.ToString("dd/MM/yyyy") : "Not returned yet";
+            string returnInfo = ReturnDate.HasValue ? ReturnDate.Value.ToString(DateFormat) : "Not returned yet";
             string fineLine = fine > 0 ? $"{fine:F2} EGP" : "None";
 
-            return $"""
-                    ── Transaction #{TransactionId} ──────────────
-                      Book      : {BookCopy.Book.Title}
-                      Copy ID   : {BookCopy.CopyId}
-                      Borrowed  : {BorrowDate:dd/MM/yyyy}
-                      Due       : {DueDate:dd/MM/yyyy}
-                      Returned  : {returnInfo}
-                      Status    : {status}
-                      Fine      : {fineLine}
-                    """;
+            return
+$@"── Transaction #{TransactionId} ──────────────
+  Book      : {BookCopy.Book.Title}
+  Copy ID   : {BookCopy.CopyId}
+  Borrowed  : {BorrowDate.ToString(DateFormat)}
+  Due       : {DueDate.ToString(DateFormat)}
+  Returned  : {returnInfo}
+  Status    : {status}
+  Fine      : {fineLine}";
         }
     }
 }

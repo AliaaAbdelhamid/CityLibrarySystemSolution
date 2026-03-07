@@ -1,9 +1,10 @@
-﻿using CityLibrarySystem.Contracts;
+using CityLibrarySystem.Contracts;
 
 namespace CityLibrarySystem.Models
 {
-    // LibraryUser implements IDisplayable
-    // Member and Librarian inherit the contract and must override DisplayInfo()
+    /// <summary>
+    /// Base class for library users. Member and Librarian override ToDisplayString.
+    /// </summary>
     public abstract class LibraryUser : IDisplayable
     {
         public string Name { get; protected set; }

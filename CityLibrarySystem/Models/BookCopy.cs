@@ -1,11 +1,12 @@
-﻿using CityLibrarySystem.Contracts;
+using CityLibrarySystem.Contracts;
 using CityLibrarySystem.Models.Enums;
 
 namespace CityLibrarySystem.Models
 {
-    // BookCopy implements BOTH interfaces:
-    // IBorrowable  — borrowing contract
-    // IDisplayable — display contract
+    /// <summary>
+    /// Physical copy of a book. Implements IBorrowable and IDisplayable.
+    /// Throws InvalidOperationException on invalid operations.
+    /// </summary>
     public class BookCopy : IBorrowable, IDisplayable
     {
         public string CopyId { get; private set; }
@@ -13,6 +14,7 @@ namespace CityLibrarySystem.Models
         public CopyStatus Status { get; private set; }
         public Book Book { get; private set; }
         public BorrowTransaction? ActiveTransaction { get; private set; }
+
         public BookCopy(string copyId, Book book, string condition = "Good")
         {
             CopyId = copyId;
@@ -20,8 +22,6 @@ namespace CityLibrarySystem.Models
             Condition = condition;
             Status = CopyStatus.Available;
         }
-
-        // IBorrowable — Borrow
 
         public void Borrow(Member member, int loanDays = 14)
         {
@@ -32,7 +32,7 @@ namespace CityLibrarySystem.Models
             ActiveTransaction = new BorrowTransaction(member, this, loanDays);
             member.AddTransaction(ActiveTransaction);
         }
-        // IBorrowable — Return
+
         public decimal Return()
         {
             if (ActiveTransaction == null)
@@ -49,10 +49,8 @@ namespace CityLibrarySystem.Models
             return fine;
         }
 
-        // IBorrowable — IsAvailable
         public bool IsAvailable() => Status == CopyStatus.Available;
 
-        // IDisplayable
         public string ToDisplayString()
         {
             string avail = IsAvailable() ? "Available" : $"{Status}";
@@ -60,3 +58,4 @@ namespace CityLibrarySystem.Models
         }
     }
 }
+

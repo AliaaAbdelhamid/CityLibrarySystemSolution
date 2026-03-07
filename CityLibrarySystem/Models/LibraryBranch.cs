@@ -1,8 +1,11 @@
-﻿using CityLibrarySystem.Contracts;
+using CityLibrarySystem.Contracts;
 using CityLibrarySystem.Extensions;
 
 namespace CityLibrarySystem.Models
 {
+    /// <summary>
+    /// Library branch aggregate root. Owns member ID sequence and manages copies and members.
+    /// </summary>
     public class LibraryBranch : IDisplayable
     {
         public string BranchId { get; private set; }
@@ -12,11 +15,16 @@ namespace CityLibrarySystem.Models
         public string OpeningHours { get; private set; }
         public Librarian Manager { get; private set; }
 
-        private List<BookCopy> _copies = new();
-        private List<Member> _members = new();
+        private readonly List<BookCopy> _copies = new();
+        private readonly List<Member> _members = new();
+        private int _memberCounter = 1;
 
         public IReadOnlyList<BookCopy> Copies => _copies;
         public IReadOnlyList<Member> Members => _members;
+
+        /// <summary>
+        /// Returns all users (manager + members) as a single read-only list.
+        /// </summary>
         public IReadOnlyList<LibraryUser> Users
         {
             get
@@ -30,6 +38,7 @@ namespace CityLibrarySystem.Models
                 return users;
             }
         }
+
         public LibraryBranch(string branchId, string name, string address,
                              string phone, string openingHours, Librarian manager)
         {
@@ -41,34 +50,30 @@ namespace CityLibrarySystem.Models
             Manager = manager;
         }
 
-        // ── Members ──────────────────────────────────────────────
-
         public Member RegisterMember(string name, string phone)
         {
-            var member = new Member(name, phone);
+            var member = new Member($"MEM-{_memberCounter++:D3}", name, null, null, phone, DateOnly.FromDateTime(DateTime.Today));
             _members.Add(member);
             return member;
         }
 
         public Member RegisterMember(string name, DateOnly? dob, string? email, string phone, DateOnly membershipDate)
         {
-            var member = new Member(name, dob, email, phone, membershipDate);
+            var member = new Member($"MEM-{_memberCounter++:D3}", name, dob, email, phone, membershipDate);
             _members.Add(member);
             return member;
         }
+
         public Member FindMember(string membershipId)
         {
             string normalized = membershipId.NormalizeID();
-
             for (int i = 0; i < _members.Count; i++)
             {
                 if (_members[i].MembershipId == normalized)
                     return _members[i];
             }
-            throw new InvalidOperationException("Member Not Found");
+            throw new InvalidOperationException("Member not found. Please check the Member ID.");
         }
-
-        // ── Book Copies ───────────────────────────────────────────
 
         public void AddBookCopy(BookCopy copy)
         {
@@ -83,29 +88,32 @@ namespace CityLibrarySystem.Models
                 if (_copies[i].CopyId == normalized)
                     return _copies[i];
             }
-            throw new InvalidOperationException("Book Copy Not Found");
+            throw new InvalidOperationException("Book copy not found. Please check the Copy ID.");
         }
 
+        /// <summary>
+        /// Returns a list of currently available book copies (no LINQ).
+        /// </summary>
         public List<BookCopy> GetAvailableCopies()
         {
-            List<BookCopy> availableCopies = new();
+            List<BookCopy> available = new();
             for (int i = 0; i < _copies.Count; i++)
             {
                 if (_copies[i].IsAvailable())
-                    availableCopies.Add(_copies[i]);
+                    available.Add(_copies[i]);
             }
-            return availableCopies;
+            return available;
         }
-        public string ToDisplayString() => $"""
-                                           ID             : {BranchId}
-                                           Name           : {BranchName}
-                                           Address        : {Address}
-                                           Phone          : {Phone}
-                                           Opening Hours  : {OpeningHours}
-                                           Manager        : {Manager.Name}
-                                           Total Members  : {_members.Count}
-                                           Total Copies   : {_copies.Count}
-                                         """;
 
+        public string ToDisplayString() =>
+$@"ID : {BranchId}
+Name : {BranchName}
+Address : {Address}
+Phone : {Phone}
+Opening Hours : {OpeningHours}
+Manager : {Manager.Name}
+Total Members : {_members.Count}
+Total Book Copies : {_copies.Count}";
     }
 }
+

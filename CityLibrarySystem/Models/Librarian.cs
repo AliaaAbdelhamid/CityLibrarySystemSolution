@@ -1,4 +1,6 @@
-﻿namespace CityLibrarySystem.Models
+
+
+namespace CityLibrarySystem.Models
 {
     public class Librarian : LibraryUser
     {
@@ -15,13 +17,11 @@
             HireDate = hireDate;
         }
 
-        // Method Overriding — different display from Member
-        public override string ToDisplayString() => $"""
-                                                     ID      : {LibrarianId}
-                                                     Name    : {Name}
-                                                     Phone   : {Phone}
-                                                     Salary  : {Salary:C}
-                                                     Hired   : {HireDate:dd/MM/yyyy}
-                                                     """;
+        public override string ToDisplayString() =>
+$@"  ID      : {LibrarianId}
+  Name    : {Name}
+  Phone   : {Phone}
+  Salary  : {Salary:C}
+  Hired   : {HireDate:dd/MM/yyyy}";
     }
 }

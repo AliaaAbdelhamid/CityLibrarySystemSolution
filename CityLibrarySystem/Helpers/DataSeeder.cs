@@ -1,4 +1,4 @@
-﻿using CityLibrarySystem.Models;
+using CityLibrarySystem.Models;
 
 namespace CityLibrarySystem.Helpers
 {
@@ -17,14 +17,14 @@ namespace CityLibrarySystem.Helpers
                 "BR-01", "City Library — Nasr City Branch", "15 Nasr Road, Nasr City, Cairo",
                 "01012345678", "Sat–Thu: 09:00 AM – 09:00 PM", manager);
 
-            // ── Members ──────────────────────────────────────────────
-
             branch.RegisterMember("Ahmed Kamal",
                 new DateOnly(1998, 5, 10), "ahmed@email.com",
                 "01098765432", new DateOnly(2023, 1, 20));
+
             branch.RegisterMember("Nour Hassan",
                 new DateOnly(2001, 8, 22), "nour@email.com",
                 "01155556677", new DateOnly(2024, 3, 5));
+
             branch.RegisterMember("Omar Samir", "01234567890");
 
             // ── Books ────────────────────────────────────────────────
@@ -47,8 +47,6 @@ namespace CityLibrarySystem.Helpers
             branch.AddBookCopy(c3);
             branch.AddBookCopy(c4);
 
-
-            Console.Clear();
             return branch;
         }
 

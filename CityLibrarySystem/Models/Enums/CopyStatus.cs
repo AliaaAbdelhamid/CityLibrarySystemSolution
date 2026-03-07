@@ -1,4 +1,4 @@
-﻿namespace CityLibrarySystem.Models.Enums
+namespace CityLibrarySystem.Models.Enums
 {
     public enum CopyStatus
     {

@@ -1,10 +1,13 @@
-﻿using CityLibrarySystem.Extensions;
+using CityLibrarySystem.Extensions;
 using CityLibrarySystem.Models;
 using ConsoleTheme;
 
 namespace CityLibrarySystem.Services
 {
-    internal class LibraryService
+    /// <summary>
+    /// Orchestrates library operations (borrow, return, registration). SRP: business workflow.
+    /// </summary>
+    public class LibraryService
     {
         private readonly LibraryBranch _branch;
         private readonly DisplayService _display;
@@ -48,9 +51,18 @@ namespace CityLibrarySystem.Services
         public void HandleRegisterMember()
         {
             string name = ThemeHelper.Prompt("Full Name");
+
             string phone = ThemeHelper.Prompt("Phone Number");
+            if (!phone.ContainsDigit())
+                throw new InvalidOperationException("Phone number must contain at least one digit.");
+
+            string email = ThemeHelper.Prompt("Email Address");
+            if (!email.IsValidEmail())
+                throw new InvalidOperationException("Invalid email format. Must contain '@' and '.'.");
+
             Member member = _branch.RegisterMember(name, phone);
             _display.ShowRegistrationSuccess(member);
         }
     }
 }
+
