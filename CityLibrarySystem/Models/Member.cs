@@ -1,5 +1,7 @@
 
 
+using System.Text;
+
 namespace CityLibrarySystem.Models
 {
     /// <summary>
@@ -7,7 +9,8 @@ namespace CityLibrarySystem.Models
     /// </summary>
     public class Member : LibraryUser
     {
-        public string MembershipId { get; internal set; } = string.Empty;
+        private static int _counter = 1;
+        public string MembershipId { get; private set; }
         public DateOnly? DateOfBirth { get; private set; }
         public string? Email { get; private set; }
         public DateOnly MembershipDate { get; private set; }
@@ -15,16 +18,22 @@ namespace CityLibrarySystem.Models
 
         public IReadOnlyList<BorrowTransaction> Transactions => _transactions;
 
-        internal Member(string membershipId, string name, DateOnly? dob,
+        internal Member(string name, DateOnly? dob,
                         string? email, string phone, DateOnly membershipDate)
             : base(name, phone)
         {
-            MembershipId = membershipId;
+            MembershipId = $"MEM-{_counter:D3}";
+            _counter++;
             DateOfBirth = dob;
             Email = email;
             MembershipDate = membershipDate;
         }
+        // Constructor 2 — minimal (membership date defaults to today)
+        public Member(string name, string phone)
+            : this(name, null, null, phone, DateOnly.FromDateTime(DateTime.Today))
+        {
 
+        }
         public void AddTransaction(BorrowTransaction t) => _transactions.Add(t);
 
         public override string ToDisplayString() =>
@@ -40,14 +49,14 @@ $@"  ID      : {MembershipId}
             if (Transactions.Count == 0)
                 return "  No transactions found.";
 
-            string result = "";
+            var sb = new StringBuilder();
             for (int i = 0; i < Transactions.Count; i++)
             {
                 if (i > 0)
-                    result += Environment.NewLine;
-                result += Transactions[i].ToDisplayString();
+                    sb.AppendLine();
+                sb.Append(Transactions[i].ToDisplayString());
             }
-            return result;
+            return sb.ToString();
         }
     }
 }

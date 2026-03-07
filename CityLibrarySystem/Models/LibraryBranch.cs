@@ -17,7 +17,6 @@ namespace CityLibrarySystem.Models
 
         private readonly List<BookCopy> _copies = new();
         private readonly List<Member> _members = new();
-        private int _memberCounter = 1;
 
         public IReadOnlyList<BookCopy> Copies => _copies;
         public IReadOnlyList<Member> Members => _members;
@@ -52,14 +51,14 @@ namespace CityLibrarySystem.Models
 
         public Member RegisterMember(string name, string phone)
         {
-            var member = new Member($"MEM-{_memberCounter++:D3}", name, null, null, phone, DateOnly.FromDateTime(DateTime.Today));
+            var member = new Member(name, phone);
             _members.Add(member);
             return member;
         }
 
         public Member RegisterMember(string name, DateOnly? dob, string? email, string phone, DateOnly membershipDate)
         {
-            var member = new Member($"MEM-{_memberCounter++:D3}", name, dob, email, phone, membershipDate);
+            var member = new Member(name, dob, email, phone, membershipDate);
             _members.Add(member);
             return member;
         }
@@ -72,7 +71,7 @@ namespace CityLibrarySystem.Models
                 if (_members[i].MembershipId == normalized)
                     return _members[i];
             }
-            throw new InvalidOperationException("Member not found. Please check the Member ID.");
+            throw new InvalidOperationException("Member not found.");
         }
 
         public void AddBookCopy(BookCopy copy)
@@ -88,7 +87,7 @@ namespace CityLibrarySystem.Models
                 if (_copies[i].CopyId == normalized)
                     return _copies[i];
             }
-            throw new InvalidOperationException("Book copy not found. Please check the Copy ID.");
+            throw new InvalidOperationException("Book copy not found.");
         }
 
         /// <summary>
@@ -96,13 +95,13 @@ namespace CityLibrarySystem.Models
         /// </summary>
         public List<BookCopy> GetAvailableCopies()
         {
-            List<BookCopy> available = new();
+            List<BookCopy> availableCopies = new();
             for (int i = 0; i < _copies.Count; i++)
             {
                 if (_copies[i].IsAvailable())
-                    available.Add(_copies[i]);
+                    availableCopies.Add(_copies[i]);
             }
-            return available;
+            return availableCopies;
         }
 
         public string ToDisplayString() =>

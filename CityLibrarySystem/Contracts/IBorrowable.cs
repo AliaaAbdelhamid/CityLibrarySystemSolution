@@ -12,4 +12,3 @@ namespace CityLibrarySystem.Contracts
         bool IsAvailable();
     }
 }
-

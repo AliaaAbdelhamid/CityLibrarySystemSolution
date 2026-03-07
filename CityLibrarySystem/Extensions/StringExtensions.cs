@@ -7,6 +7,7 @@ namespace CityLibrarySystem.Extensions
             return value?.Trim().ToUpperInvariant() ?? string.Empty;
         }
 
+
         /// <summary>
         /// Checks if a string is a valid email by verifying it contains '@' and '.'.
         /// Example: "ahmed@email.com".IsValidEmail() → true

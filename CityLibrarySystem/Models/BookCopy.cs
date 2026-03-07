@@ -14,7 +14,6 @@ namespace CityLibrarySystem.Models
         public CopyStatus Status { get; private set; }
         public Book Book { get; private set; }
         public BorrowTransaction? ActiveTransaction { get; private set; }
-
         public BookCopy(string copyId, Book book, string condition = "Good")
         {
             CopyId = copyId;

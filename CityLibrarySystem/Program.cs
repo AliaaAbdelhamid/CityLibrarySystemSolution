@@ -52,6 +52,7 @@ namespace CityLibrarySystem
 
                 try { Console.Clear(); }
                 catch (IOException) { }
+
             }
         }
     }

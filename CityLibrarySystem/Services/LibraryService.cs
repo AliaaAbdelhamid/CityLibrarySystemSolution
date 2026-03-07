@@ -9,6 +9,7 @@ namespace CityLibrarySystem.Services
     /// </summary>
     public class LibraryService
     {
+
         private readonly LibraryBranch _branch;
         private readonly DisplayService _display;
 

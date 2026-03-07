@@ -8,7 +8,6 @@ namespace CityLibrarySystem.Models
         private static int _counter = 1000;
         private const decimal FinePerDay = 10m;
         private const string DateFormat = "dd/MM/yyyy";
-
         public int TransactionId { get; private set; }
         public Member Member { get; private set; }
         public BookCopy BookCopy { get; private set; }

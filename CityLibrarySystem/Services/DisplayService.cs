@@ -8,6 +8,7 @@ namespace CityLibrarySystem.Services
     /// </summary>
     public class DisplayService
     {
+
         public void ShowBranchInfo(LibraryBranch branch)
         {
             ThemeHelper.PrintHeader("LIBRARY BRANCH INFO");

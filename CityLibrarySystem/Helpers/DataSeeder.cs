@@ -12,10 +12,12 @@ namespace CityLibrarySystem.Helpers
                 salary: 8500m,
                 hireDate: new DateOnly(2019, 3, 15));
 
+
             // ── Branch ───────────────────────────────────────────────
             LibraryBranch branch = new(
                 "BR-01", "City Library — Nasr City Branch", "15 Nasr Road, Nasr City, Cairo",
                 "01012345678", "Sat–Thu: 09:00 AM – 09:00 PM", manager);
+
 
             branch.RegisterMember("Ahmed Kamal",
                 new DateOnly(1998, 5, 10), "ahmed@email.com",

@@ -15,7 +15,6 @@ namespace CityLibrarySystem.Models
             Name = name;
             Phone = phone;
         }
-
         public abstract string ToDisplayString();
     }
 }

@@ -7,4 +7,5 @@ namespace CityLibrarySystem.Models.Enums
         Damaged,
         Reserved
     }
+
 }
